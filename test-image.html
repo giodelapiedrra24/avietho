@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .test-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .test-title {
+            margin-top: 0;
+            color: #333;
+        }
+        .image-container {
+            max-width: 100%;
+            margin: 20px 0;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            max-height: 300px;
+            border: 1px solid #eee;
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .url-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            word-break: break-all;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Supabase Image Direct Test</h1>
+    <p>This page tests direct image loading from Supabase storage without any framework.</p>
+
+    <!-- Original URL Test -->
+    <div class="test-card">
+        <h2 class="test-title">Original URL Test</h2>
+        <div class="url-display">
+            https://hwdysokpfslmotmgusqd.supabase.co/storage/v1/object/public/upload/1748267631456-68b63f32c75d106e179b3cc9f5d3de0a.png
+        </div>
+        <div class="image-container">
+            <img id="img1" src="https://hwdysokpfslmotmgusqd.supabase.co/storage/v1/object/public/upload/1748267631456-68b63f32c75d106e179b3cc9f5d3de0a.png" 
+                alt="Original URL Test" 
+                onerror="document.getElementById('status1').className='status error';document.getElementById('status1').textContent='❌ Failed to load';"
+                onload="document.getElementById('status1').className='status success';document.getElementById('status1').textContent='✅ Image loaded successfully';"
+            />
+        </div>
+        <div id="status1" class="status">Loading...</div>
+    </div>
+
+    <!-- Alternative URL Test (with uploads folder) -->
+    <div class="test-card">
+        <h2 class="test-title">Alternative URL Test (with uploads folder)</h2>
+        <div class="url-display">
+            https://hwdysokpfslmotmgusqd.supabase.co/storage/v1/object/public/upload/uploads/1748267631456-68b63f32c75d106e179b3cc9f5d3de0a.png
+        </div>
+        <div class="image-container">
+            <img id="img2" src="https://hwdysokpfslmotmgusqd.supabase.co/storage/v1/object/public/upload/uploads/1748267631456-68b63f32c75d106e179b3cc9f5d3de0a.png" 
+                alt="Alternative URL Test" 
+                onerror="document.getElementById('status2').className='status error';document.getElementById('status2').textContent='❌ Failed to load';"
+                onload="document.getElementById('status2').className='status success';document.getElementById('status2').textContent='✅ Image loaded successfully';"
+            />
+        </div>
+        <div id="status2" class="status">Loading...</div>
+    </div>
+    
+    <!-- Alternative URL Test (without extension) -->
+    <div class="test-card">
+        <h2 class="test-title">Alternative URL Test (without extension)</h2>
+        <div class="url-display">
+            https://hwdysokpfslmotmgusqd.supabase.co/storage/v1/object/public/upload/1748267631456-68b63f32c75d106e179b3cc9f5d3de0a
+        </div>
+        <div class="image-container">
+            <img id="img3" src="https://hwdysokpfslmotmgusqd.supabase.co/storage/v1/object/public/upload/1748267631456-68b63f32c75d106e179b3cc9f5d3de0a" 
+                alt="Alternative URL Test" 
+                onerror="document.getElementById('status3').className='status error';document.getElementById('status3').textContent='❌ Failed to load';"
+                onload="document.getElementById('status3').className='status success';document.getElementById('status3').textContent='✅ Image loaded successfully';"
+            />
+        </div>
+        <div id="status3" class="status">Loading...</div>
+    </div>
+
+    <!-- Test with a known working image -->
+    <div class="test-card">
+        <h2 class="test-title">Control Test (Known working image)</h2>
+        <div class="url-display">
+            https://via.placeholder.com/400x300
+        </div>
+        <div class="image-container">
+            <img id="img4" src="https://via.placeholder.com/400x300" 
+                alt="Control Test" 
+                onerror="document.getElementById('status4').className='status error';document.getElementById('status4').textContent='❌ Failed to load';"
+                onload="document.getElementById('status4').className='status success';document.getElementById('status4').textContent='✅ Image loaded successfully';"
+            />
+        </div>
+        <div id="status4" class="status">Loading...</div>
+    </div>
+
+    <script>
+        // Function to check if an image exists
+        function checkImage(url, callback) {
+            const img = new Image();
+            img.onload = function() {
+                callback(true);
+            };
+            img.onerror = function() {
+                callback(false);
+            };
+            img.src = url;
+        }
+
+        // Add direct URL test using fetch
+        window.onload = function() {
+            const urls = [
+                "https://hwdysokpfslmotmgusqd.supabase.co/storage/v1/object/public/upload/1748267631456-68b63f32c75d106e179b3cc9f5d3de0a.png",
+                "https://hwdysokpfslmotmgusqd.supabase.co/storage/v1/object/public/upload/uploads/1748267631456-68b63f32c75d106e179b3cc9f5d3de0a.png"
+            ];
+
+            // Create result container
+            const resultContainer = document.createElement('div');
+            resultContainer.className = 'test-card';
+            resultContainer.innerHTML = `
+                <h2 class="test-title">Fetch API Test Results</h2>
+                <div id="fetch-results"></div>
+            `;
+            document.body.appendChild(resultContainer);
+            
+            const resultsElement = document.getElementById('fetch-results');
+
+            // Test each URL with fetch
+            urls.forEach((url, index) => {
+                const resultElement = document.createElement('div');
+                resultElement.innerHTML = `
+                    <div class="url-display">${url}</div>
+                    <div id="fetch-status-${index}" class="status">Testing...</div>
+                `;
+                resultsElement.appendChild(resultElement);
+                
+                fetch(url, { method: 'HEAD' })
+                    .then(response => {
+                        const statusElement = document.getElementById(`fetch-status-${index}`);
+                        if (response.ok) {
+                            statusElement.className = 'status success';
+                            statusElement.innerHTML = `✅ File exists (HTTP ${response.status})`;
+                            
+                            // Add response headers
+                            const headersElement = document.createElement('div');
+                            headersElement.style.marginTop = '10px';
+                            headersElement.style.fontSize = '12px';
+                            
+                            let headersHtml = '<strong>Headers:</strong><br>';
+                            response.headers.forEach((value, key) => {
+                                headersHtml += `${key}: ${value}<br>`;
+                            });
+                            
+                            headersElement.innerHTML = headersHtml;
+                            statusElement.appendChild(headersElement);
+                        } else {
+                            statusElement.className = 'status error';
+                            statusElement.textContent = `❌ Error: HTTP ${response.status} ${response.statusText}`;
+                        }
+                    })
+                    .catch(error => {
+                        const statusElement = document.getElementById(`fetch-status-${index}`);
+                        statusElement.className = 'status error';
+                        statusElement.textContent = `❌ Network error: ${error.message}`;
+                    });
+            });
+        };
+    </script>
+</body>
+</html> 

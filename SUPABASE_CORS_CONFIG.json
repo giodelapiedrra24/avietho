@@ -1,0 +1,27 @@
+{
+  "AllowedOrigins": [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "https://your-production-domain.com"
+  ],
+  "AllowedMethods": [
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE",
+    "OPTIONS"
+  ],
+  "AllowedHeaders": [
+    "Authorization",
+    "Content-Type",
+    "x-client-info",
+    "apikey",
+    "Content-Range",
+    "Range"
+  ],
+  "MaxAgeSeconds": 3600,
+  "ExposeHeaders": [
+    "Content-Range",
+    "Range"
+  ]
+} 
